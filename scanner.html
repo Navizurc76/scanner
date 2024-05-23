@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escáner de Código de Barras</title>
+    <!-- Incluir el SDK de Active -->
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+    <style>
+        #video {
+            width: 100%;
+            height: auto;
+        }
+        #container {
+            text-align: center;
+        }
+    </style>
+<style type="text/css">
+.grande { font-size: 60px; }
+</style>
+<script>
+// Escribir aqui el código Javascript
+</script>
+</head>
+<body>
+    <div id="container">
+        <h1>Escáner de Código de Barras</h1>
+        <video id="video" autoplay="true" muted="true" playsinline="true"></video>
+        <p id="result"></p>
+    </div>
+    <script>
+        window.addEventListener('load', function () {
+            const codeReader = new ZXing.BrowserBarcodeReader();
+            const videoElement = document.getElementById('video');
+
+            codeReader.decodeOnceFromVideoDevice(undefined, videoElement)
+                .then(result => {
+                    console.log(result);
+                    document.getElementById('result').textContent = result.text;
+                    // Envía el código de barras a FileMaker WebDirect
+                    var filemakerURL = "fmp://$/NombreBaseDeDatos?script=ProcesarCodigoDeBarras&param=" + encodeURIComponent(result.text);
+                    window.location.href = filemakerURL;
+                })
+                .catch(err => console.error(err));
+        });
+    </script>
+
+
+
+</body></html>
